@@ -17,75 +17,90 @@
 
     options = $.extend(true, defaults, params);
 
+    /**
+     * Return a cached element or create a new one.
+     *
+     * @param {$} obj
+     * @returns {$}
+     */
     function getElm(obj) {
       var ret = false;
-      var id = obj.attr("id");
 
-      try {
-        ret = cacheElms[id];
-      } catch (e) {
-      }
+      ret = cacheElms[obj.attr("id")] || createNewTip(obj);
 
-      if (!ret) {
-        ret = $("<div />");
-        ret.fadeTo(0);
+      return ret;
+    }
 
-        ret.attr("id", ("wigamTips_filho_" + id));
-        ret.addClass("wigamTips_tip");
-        ret.append($("<div />").addClass("texto"));
+    /**
+     *
+     * @param {$} obj
+     * @returns {$}
+     */
+    function createNewTip( obj ) {
+      var id    = obj.attr("id");
+      var title = obj.attr("title");
+      var ret   = $("<div />");
 
-        ret.append($("<img />").attr("src", "/assets/js/plugins/wigamTips/ponta_baixo.png").addClass("ponta"));
+      obj.removeAttr("title");
 
-        $body.append(ret);
+      ret.fadeTo(0);
+      ret.attr("id", ("jq-tips_" + id));
+      ret.addClass("jq-tips_tip");
 
-        var title = obj.attr("title");
-        obj.attr("title", "");
-        ret.find(".texto").html(title);
+      var content = $("<div />");
+      content.addClass("jq-tips_content");
+      content.html(title);
+      content.appendTo(ret);
 
-        cacheElms[id] = ret;
-      }
+      var pointer = $('<i />');
+      pointer.addClass('jq-tips_pointer');
+      pointer.appendTo(ret);
+
+      $body.append(ret);
+
+      cacheElms[id] = ret;
 
       return ret;
     }
 
     var HoverIn = function() {
-      var obj = $(this);
-      var posPai = obj.offset();
+      var obj     = $(this);
+      var offset  = obj.offset();
       var toolTip = getElm(obj);
 
       var Css = {
-        top: (posPai.top - toolTip.height() - 10)
-        , left: (posPai.left - (toolTip.width() * 0.5) + (obj.width() / 2))
-        , display: "block"
+        top     : (offset.top - toolTip.height() - 10),
+        left    : (offset.left - (toolTip.width() * 0.5) + (obj.width() / 2)),
+        display : "block"
       };
 
       toolTip.css(Css);
 
-
       toolTip.animate(
         {
-          opacity: 1
-        }, {
-        duration: options.delay
-        , queue: false
-      });
+          opacity   : 1
+        },
+        {
+          duration  : options.delay,
+          queue     : false
+        }
+      );
     };
 
     var HoverOut = function() {
       var toolTip = getElm($(this));
 
-      toolTip.clearQueue().attr("style", "").animate(
+      toolTip.clearQueue().removeAttr("style").animate(
         {
-          opacity: 0
-        }, 100,
-        function()
-        {
+          opacity : 0
+        },
+        100,
+        function() {
           toolTip.css({
-            display: "none"
-            , top: "-10000px"
-            , left: "-10000px"
+            display : "none",
+            top     : "-10000px",
+            left    : "-10000px"
           });
-
         });
     };
 
@@ -94,11 +109,10 @@
 
       var id = obj.attr("id");
 
-      if (!id)
-      {
+      if( !id ) {
         nTips += 1;
 
-        id = "wgToolTips_pai_" + (nTips);
+        id = "jq-tips_activator-" + (nTips);
         obj.attr("id", id);
       }
 

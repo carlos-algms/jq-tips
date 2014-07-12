@@ -1,29 +1,30 @@
 
-.wigamTips_tip {
+.jq-tips_tip {
 	position: absolute;
-	padding-bottom: 8px;
-	text-shadow: 0 1px 2px #000;
 	display: none;
-	z-index: 1000000;
+	z-index: 10000;
 }
 
-.wigamTips_tip .ponta {
-	display: block;
-	position: absolute;
-	bottom: 0;
+.jq-tips_pointer {
+	float: left;
+	position: relative;
 	left: 50%;
-	z-index: 1000;
-	margin-left: -5px;
+	z-index: 10000;
+	margin-left: -10px;
+	border-style: solid;
+	border-color: rgba(0, 0, 0, 0.6);
+	border-width: 10px;
+	border-bottom: none;
+	border-left-color: transparent;
+	border-right-color: transparent;
 }
 
-.wigamTips_tip .texto {
-	background: url(/assets/img/trans_black.png);
+.jq-tips_content {
+	background: rgba(0,0,0,0.6);
 	border-radius: 4px;
-	padding: 2px 5px;
+	padding: 7px;
 	color: #FFF;
-	-webkit-box-shadow:  2px 1px 2px 0px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow:  2px 1px 2px 0px rgba(0, 0, 0, 0.3);
-	box-shadow:  2px 1px 2px 0px rgba(0, 0, 0, 0.3);
+
 	position: relative;
 	z-index: 1;
 }
